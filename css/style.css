@@ -1,0 +1,14 @@
+.map{
+ width: 1000px;
+ padding: 0px;
+}
+
+body{
+    margin: auto;
+    background-color: beige;
+}
+
+
+h1{
+text-align: center;
+}

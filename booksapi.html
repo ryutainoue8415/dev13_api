@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>googleBooksAPI</title>
+</head>
+
+<body>
+
+  <h1>google books API</h1>
+  <button id="btn">データ取得</button>
+  <textbox id="output"></textbox>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- axiosライブラリの読み込み -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+    // リクエストを送るurlを準備  volumes?の後に検索条件を入れる いつも同じ記述
+    const url = 'https://www.googleapis.com/books/v1/volumes?q=intitle:javascript';
+    axios.get(url) //リクエストを実行
+    .then(function(response){
+      console.log(response.data.items[0].volumeInfo);
+      const array = []; //空の配列を作って処理結果を入れる
+      for(let i = 0; i < response.data.items.length; i++ ){ //配列に上限回数に達すまで値を入れる
+        array.push(`<a href="${response.data.items[i].volumeInfo.previewLink}"><p>${response.data.items[i].volumeInfo.title}</p>`);//配列に入れる値
+        console.log(array);
+      }
+      $("#output").html(array); //どこに何を表示させるか
+    })
+  
+
+
+    .catch(function(error){
+      console.log(error);
+    })
+
+    .finally(function(){
+      console.log("done!");
+    });
+
+
+
+  </script>
+</body>
+
+</html>

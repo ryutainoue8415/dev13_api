@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>GPS取得&MAP</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      height: calc(100% - 102px);
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <h1>位置情報取得&Map表示</h1>
+  <div id="map" class="map"></div>
+ 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  //##########bing.map APIky##############
+  <script src='https://www.bing.com/api/maps/mapcontrol?key=ArkQZpJZymz7V0Ux17L88LOmTcA356z8yRBasGvYelW2mh9KycffnfDT2kygZgZJ' async defer></script>
+  <script>
+    let map;
+  //#######取得に成功した場合に実行される関数###########
+    function mapsInit(position){    //mapsInitに書き換えるだけ
+      console.log(position);
+      const lat = position.coords.latitude;  //緯度
+      const lon = position.coords.longitude; //経度
+      map = new Microsoft.Maps.Map("#map", {  //ブラウザ上の地図を表示させる位置
+    center: {
+      latitude:  lat,
+      longitude: lon,
+    },
+    zoom: 18,
+  });
+    }
+
+    //#######取得に失敗した場合に実行される関数###########
+    function showError(error){
+      console.log(error);
+      const errorMessages = [
+        "位置情報が許可されていません",
+        "現在地を特定できません",
+        "位置情報を取得する前にタイムアウトになりました"
+      ];
+      alert(`error:${errorMessages[error.code -1]}`);
+    }
+
+    //#######位置情報の取得に必要なオプション#############
+      const option = {
+      enableHighAccuracy: true, //対応端末で GPS を使用するかどうかの設定
+      maximumAge: 10000,        //指定時間以内であれば前回取得した位置情報の値を用いる
+      timeout:10000,            //タイムアウト時間を設定する
+      }
+
+    //########ブラウザの読み込みが終わってから処理を開始するように指示#########
+    window.onload = function(){
+    navigator.geolocation.getCurrentPosition(mapsInit,showError,option);//成功,失敗,op
+    };
+
+  </script>
+
+</body>
+
+</html>
